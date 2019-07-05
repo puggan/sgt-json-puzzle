@@ -15,7 +15,8 @@
 	$data->settings->rows = $m['h2'];
 	$data->settings->unique = !empty($m['u']);
 	$data->settings->difficulty = $m['d'] === 'e' ? 'Easy' : 'Normal';
-	$data->seed = $config . '#' . substr($o[1 + $data->settings->rows], 9);
+	$data->id = $data->settings->columns . 'x' .$data->settings->rows . ':' . substr($o[1 + $data->settings->rows], 9);
+	$data->seed = $config . '#' . substr($o[2 + $data->settings->rows], 9);
 	$data->state = [];
 
 	$chr_table = '.01';
