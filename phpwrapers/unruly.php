@@ -1,4 +1,7 @@
 <?php
+
+	header('Content-Type: application/json');
+
 	chdir(__DIR__ . '/..');
 	exec('bin/unrulysolver', $o);
 
