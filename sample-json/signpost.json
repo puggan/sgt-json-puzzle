@@ -1,0 +1,15 @@
+{
+  "game": "signpost",
+  "seed": "4x4c#873410940583590",
+  "settings": {
+    "columns": 4,
+    "cornders": true,
+    "rows": 4
+  },
+  "state": [
+    ["1S","S","W","SW"],
+    ["SE","SE","S","N"],
+    ["NE","E","SE","N"],
+    ["N","NW","W","16G"]
+  ]
+}
