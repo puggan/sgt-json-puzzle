@@ -1,0 +1,6 @@
+{
+  "game": "<game-name>",
+  "seed": "<seed-in-hex>",
+  "settings": {},
+  "state": {}
+}
