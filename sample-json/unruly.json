@@ -3,8 +3,8 @@
   "seed": "8x8de#525151667582475",
   "settings": {
     "columns": 8,
-    "difficulty": "easy",
-    "rowd": 8,
+    "difficulty": "Easy",
+    "rows": 8,
     "unique": false
   },
   "state": [
