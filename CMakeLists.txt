@@ -7,10 +7,14 @@ include_directories(c)
 
 add_compile_definitions(STANDALONE_SOLVER)
 
+add_executable(patternsolver
+        c/puzzles.h c/nullfe.c c/malloc.c c/misc.c c/random.c
+        c/pattern.c)
+
 add_executable(solosolver
-    c/puzzles.h c/nullfe.c c/malloc.c c/misc.c c/random.c c/dsf.c c/divvy.c
-    c/solo.c)
+        c/puzzles.h c/nullfe.c c/malloc.c c/misc.c c/random.c c/dsf.c c/divvy.c
+        c/solo.c)
 
 add_executable(unrulysolver
-    c/puzzles.h c/nullfe.c c/malloc.c c/misc.c c/random.c
-    c/unruly.c)
+        c/puzzles.h c/nullfe.c c/malloc.c c/misc.c c/random.c
+        c/unruly.c)
