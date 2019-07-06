@@ -14,14 +14,14 @@
 	}
 
 	$data = (object) [];
+	$data->id = $data->settings->columns . 'x' .$data->settings->rows . ':' . substr($o[1 + $data->settings->rows], 9);
 	$data->name = 'unruly';
+	$data->seed = $config . '#' . substr($o[2 + $data->settings->rows], 6);
 	$data->settings = (object) [];
 	$data->settings->columns = $m['w2'];
+	$data->settings->difficulty = $dificulties[$m['d']] ?? $dificulties['e'];
 	$data->settings->rows = $m['h2'];
 	$data->settings->unique = !empty($m['u']);
-	$data->settings->difficulty = $dificulties[$m['d']] ?? $dificulties['e'];
-	$data->id = $data->settings->columns . 'x' .$data->settings->rows . ':' . substr($o[1 + $data->settings->rows], 9);
-	$data->seed = $config . '#' . substr($o[2 + $data->settings->rows], 6);
 	$data->state = [];
 
 	$chr_table = '.01';
