@@ -21,7 +21,7 @@ bin/fillingsolver: bin/.keep $(BASE_DEP) c/dsf.c c/filling.c
 	gcc -D STANDALONE_SOLVER $(BASE_DEP) c/dsf.c c/filling.c -o bin/fillingsolver
 
 galaxies: bin/galaxiessolver
-	bin/galaxiessolver
+	bin/galaxiessolver 7
 bin/galaxiessolver: bin/.keep $(BASE_DEP) c/dsf.c c/galaxies.c
 	gcc -D STANDALONE_SOLVER $(BASE_DEP) c/dsf.c c/galaxies.c -lm -o bin/galaxiessolver
 
@@ -86,7 +86,7 @@ bin/towerssolver: bin/.keep $(BASE_DEP) c/latin.c c/latin.h c/matching.c c/match
 	gcc -D STANDALONE_SOLVER $(BASE_DEP) c/latin.c c/matching.c c/tree234.c c/towers.c -o bin/towerssolver
 
 unequal: bin/unequalsolver
-	bin/unequalsolver
+	bin/unequalsolver 5dk
 bin/unequalsolver: bin/.keep $(BASE_DEP) c/latin.c c/latin.h c/matching.c c/matching.h c/tree234.c c/tree234.h c/unequal.c
 	gcc -D STANDALONE_SOLVER $(BASE_DEP) c/latin.c c/matching.c c/tree234.c c/unequal.c -o bin/unequalsolver
 
