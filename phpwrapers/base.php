@@ -67,7 +67,7 @@
 		$id = substr(strstr($o[$ncsi ? 2 : 1], $s), 2);
 		$seed = substr(strstr($o[$ncsi ? 1 : 2], $s), 2);
 		$data->id = $config . ':' . $id;
-		$data->seed = $config . '¤' . $seed;
+		$data->seed = $config . '#' . $seed;
 	}
 
 	/**

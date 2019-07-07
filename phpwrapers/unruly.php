@@ -12,9 +12,9 @@
 		die('Failed generations');
 	}
 
-	$data->id = $data->settings->columns . 'x' . $data->settings->rows . ':' . substr($o[1 + $data->settings->rows], 9);
-	$data->name = 'unruly';
-	$data->seed = $config . '#' . substr($o[2 + $data->settings->rows], 6);
+	$data->id = $config . ':' . substr($o[1 + $m['h2']], 9);
+	$data->name = 'Unruly';
+	$data->seed = $config . '#' . substr($o[2 + $m['h2']], 6);
 	$data->settings->columns = $m['w2'];
 	$data->settings->difficulty = $dificulties[$m['d']] ?? $dificulties['e'];
 	$data->settings->rows = $m['h2'];
