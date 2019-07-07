@@ -12,18 +12,13 @@
 
 	exec('bin/dominosasolver', $o);
 
-	[$name, $seed] = explode(': ', $o[2]);
-	[$name, $id] = explode(': ', $o[1], 2);
-	[$name, $config] = explode(': ', $o[0]);
+	parse_ncis($o);
 
 	if(!preg_match('/^(?<m>\d+)d(?<d>.)$/', $config, $m))
 	{
 		die('Failed generations');
 	}
 
-	$data->id = $config . ':' . $id;
-	$data->name = $name;
-	$data->seed = $config . '#' . $seed;
 	$data->settings->columns = $m['m'] + 2;
 	$data->settings->difficulty = $dificulties[$m['d'] ?? 't'] ?? $dificulties['t'];
 	$data->settings->maxs = $m['m'];

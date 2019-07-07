@@ -12,9 +12,7 @@
 
 	exec('bin/unequalsolver', $o);
 
-	[$name, $id] = explode(': ', $o[2], 2);
-	[$name, $seed] = explode(': ', $o[1]);
-	[$name, $config] = explode(': ', $o[0]);
+	parse_ncis($o, true);
 
 	if(!preg_match('/^(?<w2>\d+)(?<a>a?)d(?<d>.)$/', $config, $m))
 	{
@@ -22,13 +20,10 @@
 	}
 
 	$size = $m['w2'];
-	$data->id = $config . ':' . $id;
-	$data->name = $name;
 	$data->settings->columns = $size;
 	$data->settings->difficulty = $dificulties[$m['d'] ?? -1] ?? NULL;
 	$data->settings->rows = $size;
 	$data->settings->adjacent = !empty($m['a']);
-	$data->seed = $config . '#' . $seed;
 
 	if(!preg_match_all('#(?<d>\d+)(?<c>[URDL]*),#', $id, $parts, PREG_SET_ORDER))
 	{

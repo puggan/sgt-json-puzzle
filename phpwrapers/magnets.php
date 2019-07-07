@@ -9,7 +9,7 @@
 
 	exec('bin/magnetssolver', $o);
 
-	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)d(?<d>.)(?<S>S?):(?<c>[\d\.,]+)(?<l>[BLRT]+) \(seed (?<s>\d+)\)$/', $o[0], $m))
+	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)d(?<d>.)(?<S>S?):(?<c>[\d.,]+)(?<l>[BLRT]+) \(seed (?<s>\d+)\)$/', $o[0], $m))
 	{
 		die('Failed generations');
 	}

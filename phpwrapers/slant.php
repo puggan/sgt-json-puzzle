@@ -9,24 +9,17 @@
 
 	exec('bin/slantsolver', $o);
 
-	[$name, $seed] = explode(': ', $o[2]);
-	[$name, $id] = explode(': ', $o[1], 2);
-	[$name, $config] = explode(': ', $o[0]);
+	parse_ncis($o);
 
 	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)d(?<d>.)$/', $config, $m))
 	{
-		header('HTTP/1.1 500 Failed generations');
-		die('false');
+		die('Failed generations');
 	}
 
-	$data = (object) [];
-	$data->id = $config . ':' . $id;
-	$data->name = $name;
-	$data->settings = (object) [];
 	$data->settings->columns = $m['w2'];
 	$data->settings->difficulty = $dificulties[$m['d'] ?? -1] ?? NULL;
 	$data->settings->rows = $m['h2'];
-	$data->seed = $config . '#' . $seed;
+
 	$c = $data->settings->columns + 1;
 	$data->state = array_fill(0, $data->settings->rows + 1, array_fill(0, $c, 5));
 
@@ -54,14 +47,3 @@
 			$pos++;
 		}
 	}
-
-	if(empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
-	{
-		echo json_encode($data);
-	}
-	else
-	{
-		$data->debug = $o;
-		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
-	}
-

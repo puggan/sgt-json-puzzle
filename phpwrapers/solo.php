@@ -12,16 +12,14 @@
 	];
 
 	exec('bin/solosolver', $o);
-	[$name, $config] = explode(': ', $o[0]);
+
+	parse_ncis($o);
 
 	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)(?<x>x)?(?<k>k)?(?<s>a|[mr]d?[248])?(d(?<d>.))?$/', $config, $m))
 	{
 		die('Failed generations');
 	}
 
-	$data->id = $config . ':' . substr($o[1], 9);
-	$data->name = $name;
-	$data->seed = $config . '#' . substr($o[2], 6);
 	$data->settings->columns = $m['w2'];
 	$data->settings->diagonal = !empty($m['x']);
 	$data->settings->difficulty = $dificulties[$m['d'] ?? 'e'] ?? $dificulties['e'];

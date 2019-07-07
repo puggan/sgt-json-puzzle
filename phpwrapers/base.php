@@ -4,7 +4,10 @@
 	define('DEBUG', !empty($_GET['debug']) || ($argv[1] ?? '') === '-v');
 	define('CLI', PHP_SAPI === 'cli');
 
+	$config = NULL;
+	$id = NULL;
 	$o = NULL;
+	$seed = NULL;
 	$data = (object) [];
 	$data->id = NULL;
 	$data->name = NULL;
@@ -50,3 +53,19 @@
 			echo json_encode($data);
 		}
 	);
+
+	/**
+	 * @param string[] $o
+	 * @param bool $nics
+	 */
+	function parse_ncis($o, $ncsi = false)
+	{
+		global $config, $data, $id, $o, $seed;
+		$s = ': ';
+		$data->name = strstr($o[0], $s, true);
+		$id = strstr($o[0], $s);
+		$seed = strstr($o[$ncsi ? 2 : 1], $s);
+		$config = strstr($o[$ncsi ? 1 : 2], $s);
+		$data->id = $config . ':' . $id;
+		$data->seed = $config . '¤' . $seed;
+	}
