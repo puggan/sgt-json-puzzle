@@ -25,39 +25,16 @@
 		die('Failed generations');
 	}
 
+	$block_test = static function ($n) {
+		return $n === 'B' ? 5 : +$n;
+	};
+
 	$data->settings->columns = $m['w2'];
 	$data->settings->difficulty = $dificulties[$m['d'] ?? -1] ?? NULL;
 	$data->settings->rows = $m['h2'];
 	$data->settings->blackpc = $m['b'];
 	$data->settings->symm = $symm[$m['s']] ?? NULL;
-
-	$c = $data->settings->columns;
-	$data->state = array_fill(0, $data->settings->rows, array_fill(0, $c, 6));
-
-	if(preg_match_all('#(?<d>z*[a-z])?(?<t>[0-4B])#', $id, $parts, PREG_SET_ORDER))
-	{
-		$pos = 0;
-		foreach($parts as $part)
-		{
-			if($part['d'] && $part['d'] !== '_')
-			{
-				$d = $part['d'];
-				while($d && $d[0] === 'z')
-				{
-					$pos += 26;
-					$d = substr($d, 1);
-				}
-				if($d)
-				{
-					$pos += ord($d[0]) - 96;
-				}
-			}
-			$col = $pos % $c;
-			$row = ($pos - $col) / $c;
-			$data->state[$row][$col] = ($part['t'] === 'B' ? 5 : +$part['t']);
-			$pos++;
-		}
-	}
+	$data->state = az_grid(fill_2d($m['h2'], $m['w2'], 6), $id, false, $block_test, '[\dB]');
 
 	if(DEBUG)
 	{
@@ -71,4 +48,3 @@
 			'Open space',
 		];
 	}
-
