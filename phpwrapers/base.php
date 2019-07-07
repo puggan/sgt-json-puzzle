@@ -12,6 +12,12 @@
 	if(isset($_SERVER))
 	{
 		header('Content-Type: application/json');
+
+		$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+		if($origin && preg_match('#^https://[a-z]+(\.[a-z]+)+$#', $origin))
+		{
+			header('Access-Control-Allow-Origin: ' . $origin);
+		}
 	}
 
 	register_shutdown_function(
