@@ -14,11 +14,11 @@
 	}
 
 	$data = (object) [];
+	$data->id = $o[1];
 	$data->name = 'signpost';
 	$data->settings = (object) [];
 	$data->settings->columns = $m['w2'];
 	$data->settings->rows = $m['h2'];
-	$data->id = $o[1];
 	$data->seed = $o[0];
 	$data->state = [];
 
