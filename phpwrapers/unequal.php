@@ -1,6 +1,6 @@
 <?php
 
-	header('Content-Type: application/json');
+	require_once __DIR__ . '/base.php';
 
 	$dificulties = [
 		't' => 'Trival',
@@ -10,7 +10,6 @@
 		'r' => 'Recursive',
 	];
 
-	chdir(__DIR__ . '/..');
 	exec('bin/unequalsolver', $o);
 
 	[$name, $id] = explode(': ', $o[2], 2);
@@ -19,15 +18,12 @@
 
 	if(!preg_match('/^(?<w2>\d+)(?<a>a?)d(?<d>.)$/', $config, $m))
 	{
-		header('HTTP/1.1 500 Failed generations');
-		die('false');
+		die('Failed generations');
 	}
 
 	$size = $m['w2'];
-	$data = (object) [];
 	$data->id = $config . ':' . $id;
 	$data->name = $name;
-	$data->settings = (object) [];
 	$data->settings->columns = $size;
 	$data->settings->difficulty = $dificulties[$m['d'] ?? -1] ?? NULL;
 	$data->settings->rows = $size;
@@ -36,8 +32,7 @@
 
 	if(!preg_match_all('#(?<d>\d+)(?<c>[URDL]*),#', $id, $parts, PREG_SET_ORDER))
 	{
-		header('HTTP/1.1 500 Failed generations');
-		die('false');
+		die('Failed generations');
 	}
 
 	$clues = [];
@@ -46,13 +41,3 @@
 		$clues[] = [+$cell['d'], $cell['c']];
 	}
 	$data->state = array_chunk($clues, $size);
-
-	if(empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
-	{
-		echo json_encode($data);
-	}
-	else
-	{
-		$data->debug = $o;
-		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
-	}
