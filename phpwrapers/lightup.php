@@ -1,6 +1,6 @@
 <?php
 
-	header('Content-Type: application/json');
+	require_once __DIR__ . '/base.php';
 
 	$dificulties = [
 		'Easy',
@@ -16,7 +16,6 @@
 		'Max',
 	];
 
-	chdir(__DIR__ . '/..');
 	exec('bin/lightupsolver', $o);
 
 	[$name, $seed] = explode(': ', $o[2]);
@@ -25,21 +24,17 @@
 
 	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)b(?<b>\d+)s(?<s>\d+)d(?<d>\d+)$/', $config, $m))
 	{
-		header('HTTP/1.1 500 Failed generations');
-		die('false');
+		die('Failed generations');
 	}
 
-	$data = (object) [];
 	$data->id = $config . ':' . $id;
 	$data->name = $name;
-	$data->settings = (object) [];
 	$data->settings->columns = $m['w2'];
 	$data->settings->difficulty = $dificulties[$m['d'] ?? -1] ?? NULL;
 	$data->settings->rows = $m['h2'];
 	$data->settings->blackpc = $m['b'];
 	$data->settings->symm = $symm[$m['s']] ?? NULL;
 	$data->seed = $config . '#' . $seed;
-	$data->state = (object) [];
 
 	$c = $data->settings->columns;
 	$data->state = array_fill(0, $data->settings->rows, array_fill(0, $c, 6));
@@ -69,11 +64,7 @@
 		}
 	}
 
-	if(empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
-	{
-		echo json_encode($data);
-	}
-	else
+	if(DEBUG)
 	{
 		$data->specification = [
 			'No neighbors are lights',
@@ -84,7 +75,5 @@
 			'Unknown number of neighbors are lights',
 			'Open space',
 		];
-		$data->debug = $o;
-		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
 	}
 

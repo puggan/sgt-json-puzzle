@@ -1,22 +1,18 @@
 <?php
 
-	header('Content-Type: application/json');
+	require_once __DIR__ . '/base.php';
 
-	chdir(__DIR__ . '/..');
 	exec('bin/signpostsolver -v', $o);
 
 	[$config, $id] = explode(':', $o[1]);
 
 	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)(?<c>c)?$/', $config, $m))
 	{
-		header('HTTP/1.1 500 Failed generations');
-		die('false');
+		die('Failed generations');
 	}
 
-	$data = (object) [];
 	$data->id = $o[1];
 	$data->name = 'signpost';
-	$data->settings = (object) [];
 	$data->settings->columns = $m['w2'];
 	$data->settings->rows = $m['h2'];
 	$data->seed = $o[0];
@@ -46,14 +42,3 @@
 			$part['n'] ? +$part['n'] : 0,
 		];
 	}
-
-	if(empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
-	{
-		echo json_encode($data);
-	}
-	else
-	{
-		$data->debug = $o;
-		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
-	}
-

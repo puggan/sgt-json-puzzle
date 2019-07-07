@@ -1,13 +1,12 @@
 <?php
 
-	header('Content-Type: application/json');
+	require_once __DIR__ . '/base.php';
 
 	$dificulties = [
 		'e' => 'Easy',
 		't' => 'Tricky',
 	];
 
-	chdir(__DIR__ . '/..');
 	exec('bin/slantsolver', $o);
 
 	[$name, $seed] = explode(': ', $o[2]);

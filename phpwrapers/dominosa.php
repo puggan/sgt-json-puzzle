@@ -1,5 +1,7 @@
 <?php
 
+	require_once __DIR__ . '/base.php';
+
 	$dificulties = [
 		't' => 'Trival',
 		'b' => 'Basic',
@@ -8,9 +10,6 @@
 		'a' => 'Ambiguous',
 	];
 
-	header('Content-Type: application/json');
-
-	chdir(__DIR__ . '/..');
 	exec('bin/dominosasolver', $o);
 
 	[$name, $seed] = explode(': ', $o[2]);
@@ -19,25 +18,20 @@
 
 	if(!preg_match('/^(?<m>\d+)d(?<d>.)$/', $config, $m))
 	{
-		header('HTTP/1.1 500 Failed generations');
-		die('false');
+		die('Failed generations');
 	}
 
-	$data = (object) [];
 	$data->id = $config . ':' . $id;
 	$data->name = $name;
 	$data->seed = $config . '#' . $seed;
-	$data->settings = (object) [];
 	$data->settings->columns = $m['m'] + 2;
 	$data->settings->difficulty = $dificulties[$m['d'] ?? 't'] ?? $dificulties['t'];
 	$data->settings->maxs = $m['m'];
 	$data->settings->rows = $m['m'] + 1;
-	$data->state = [];
 
 	if(!preg_match_all('#\[\d+]|\d#', $id, $parts))
 	{
-		header('HTTP/1.1 500 Failed generations');
-		die('false');
+		die('Failed generations');
 	}
 	$clues = array_map(
 		static function ($n) {
@@ -45,15 +39,5 @@
 		},
 		$parts[0]
 	);
-	print_r($clues);
-	$data->state = array_chunk($clues, $data->settings->columns);
 
-	if(empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
-	{
-		echo json_encode($data);
-	}
-	else
-	{
-		$data->debug = $o;
-		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
-	}
+	$data->state = array_chunk($clues, $data->settings->columns);
