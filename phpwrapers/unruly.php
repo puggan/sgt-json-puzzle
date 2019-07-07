@@ -34,7 +34,7 @@
 		$data->state[] = array_map($chr_lookup, explode(' ', $o[$row_nr]));
 	}
 
-	if(0 && empty($_GET['debug']))
+	if(0 && empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
 	{
 		echo json_encode($data);
 	} else {

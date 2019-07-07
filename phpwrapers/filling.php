@@ -54,7 +54,7 @@
 		}
 	}
 
-	if(empty($_GET['debug']))
+	if(empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
 	{
 		echo json_encode($data);
 	} else {
