@@ -3,20 +3,29 @@
 	header('Content-Type: application/json');
 
 	$dificulties = [
-		'e' => 'Easy',
-		'h' => 'Hard',
-		'x' => 'Extreme',
-		'u' => 'Unreasonable',
+		'Easy',
+		'Tricky',
+		'Hard',
+	];
+	$symm = [
+		'None',
+		'Ref2',
+		'Rot2',
+		'Ref4',
+		'Rot4',
+		'Max',
 	];
 
+
 	chdir(__DIR__ . '/..');
-	exec('bin/towerssolver', $o);
+	exec('bin/lightupsolver', $o);
 
 	[$name, $seed] = explode(': ', $o[2]);
 	[$name, $id] = explode(': ', $o[1], 2);
 	[$name, $config] = explode(': ', $o[0]);
 
-	if(!preg_match('/^(?<w2>\d+)(d(?<d>.))?$/', $config, $m))
+
+	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)b(?<b>\d+)s(?<s>\d+)d(?<d>\d+)$/', $config, $m))
 	{
 		header('HTTP/1.1 500 Failed generations');
 		echo $config, PHP_EOL;
@@ -28,22 +37,17 @@
 	$data->name = $name;
 	$data->settings = (object) [];
 	$data->settings->columns = $m['w2'];
-	$data->settings->difficulty = $dificulties[$m['d'] ?? 'e'] ?? $dificulties['e'];
-	$data->settings->rows = $m['w2'];
+	$data->settings->difficulty = $dificulties[$m['d'] ?? -1] ?? null;
+	$data->settings->rows = $m['h2'];
+	$data->settings->blackpc = $m['b'];
+	$data->settings->symm = $symm[$m['s']] ?? null;
 	$data->seed = $config . '#' . $seed;
 	$data->state = (object) [];
 
-	[$clues, $towers] = explode(',', $id);
-	$clues = array_map('intval', explode('/', $clues));
 	$c = $data->settings->columns;
-	foreach(['N', 'S', 'W', 'E'] as $index => $dir)
-	{
-		$data->state->$dir = array_slice($clues, $index * $c, $c);
-	}
+	$data->state = array_fill(0, $data->settings->rows, array_fill(0, $c, 6));
 
-	$data->state->grid = array_fill(0, $c, array_fill(0, $c, 0));
-
-	if($towers && preg_match_all('#(?<d>z*[a-z_])?(?<t>\d+)#', $towers, $parts, PREG_SET_ORDER))
+	if(preg_match_all('#(?<d>z*[a-z_])?(?<t>[0-4B])#', $id, $parts, PREG_SET_ORDER))
 	{
 		$pos = 0;
 		foreach($parts as $part)
@@ -63,19 +67,25 @@
 			}
 			$col = $pos % $c;
 			$row = ($pos - $col) / $c;
-			$data->state->grid[$row][$col] = +$part['t'];
+			$data->state[$row][$col] = ($part['t'] === 'B' ? 5 : +$part['t']);
 			$pos++;
 		}
-
 	}
 
 	if(empty($_GET['debug']))
 	{
 		echo json_encode($data);
-	}
-	else
-	{
+	} else {
+		$data->specification = [
+			'No neighbors are lights',
+			'1 neighbor is a light',
+			'2 neighbors are lights',
+			'3 neighbors are lights',
+			'All neighbors are lights',
+			'Unknown number of neighbors are lights',
+			'Open space'
+		];
 		$data->debug = $o;
-		echo json_encode($data, 128 * 3);
+		echo json_encode($data, 128*3);
 	}
 
