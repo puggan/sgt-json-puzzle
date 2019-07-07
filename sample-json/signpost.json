@@ -1,15 +1,15 @@
 {
+  "id": "4x4:1cceeegfgdbbhbcb16a",
   "game": "signpost",
   "seed": "4x4c#873410940583590",
   "settings": {
     "columns": 4,
-    "cornders": true,
     "rows": 4
   },
   "state": [
-    ["1S","S","W","SW"],
-    ["SE","SE","S","N"],
-    ["NE","E","SE","N"],
-    ["N","NW","W","16G"]
+    [["E",1],["E",0],["S",0],["S",0]],
+    [["S",0],["W",0],["SW",0],["W",0]],
+    [["SE",0],["NE",0],["NE",0],["NW",0]],
+    [["NE",0],["E",0],["NE",0],["N",16]]
   ]
 }
