@@ -2,6 +2,7 @@
 
 	header('Content-Type: application/json');
 
+	if(basename(__DIR__) === 'draft') chdir(__DIR__ . '/../..'); else
 	chdir(__DIR__ . '/..');
 	exec('bin/fillingsolver', $o);
 
