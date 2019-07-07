@@ -8,13 +8,14 @@
 	$dificulties = ['e' => 'Easy', 'n' => 'Normal'];
 
 	$config = preg_replace('/.* /', '', $o[0]);
-	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)(?<x>u)?d(?<d>.)$/', $config, $m)) {
+	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)(?<x>u)?d(?<d>.)$/', $config, $m))
+	{
 		header('HTTP/1.1 500 Failed generations');
 		die('false');
 	}
 
 	$data = (object) [];
-	$data->id = $data->settings->columns . 'x' .$data->settings->rows . ':' . substr($o[1 + $data->settings->rows], 9);
+	$data->id = $data->settings->columns . 'x' . $data->settings->rows . ':' . substr($o[1 + $data->settings->rows], 9);
 	$data->name = 'unruly';
 	$data->seed = $config . '#' . substr($o[2 + $data->settings->rows], 6);
 	$data->settings = (object) [];
@@ -37,7 +38,9 @@
 	if(0 && empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
 	{
 		echo json_encode($data);
-	} else {
+	}
+	else
+	{
 		$data->debug = $o;
-		echo json_encode($data, 128*3);
+		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
 	}

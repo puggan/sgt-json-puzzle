@@ -14,11 +14,9 @@
 	[$name, $id] = explode(': ', $o[1], 2);
 	[$name, $config] = explode(': ', $o[0]);
 
-
 	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)d(?<d>.)$/', $config, $m))
 	{
 		header('HTTP/1.1 500 Failed generations');
-		echo $config, PHP_EOL;
 		die('false');
 	}
 
@@ -35,7 +33,7 @@
 	$c = $data->settings->columns;
 	$clues = explode(',', $id);
 	$data->state->columns = array_slice($clues, 1, $c);
-	$data->state->rows = array_slice($clues, 1+$c);
+	$data->state->rows = array_slice($clues, 1 + $c);
 	$data->state->grid = array_fill(0, $data->settings->rows, array_fill(0, $c, 0));
 
 	/** @noinspection NotOptimalRegularExpressionsInspection */
@@ -69,7 +67,9 @@
 	if(empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
 	{
 		echo json_encode($data);
-	} else {
+	}
+	else
+	{
 		$data->debug = $o;
-		echo json_encode($data, 128*3);
+		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
 	}

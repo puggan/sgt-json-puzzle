@@ -15,9 +15,9 @@
 	exec('bin/solosolver', $o);
 	[$name, $config] = explode(': ', $o[0]);
 
-	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)(?<x>x)?(?<k>k)?(?<s>a|[mr]d?[248])?(d(?<d>.))?$/', $config, $m)) {
+	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)(?<x>x)?(?<k>k)?(?<s>a|[mr]d?[248])?(d(?<d>.))?$/', $config, $m))
+	{
 		header('HTTP/1.1 500 Failed generations');
-		echo $config, PHP_EOL;
 		die('false');
 	}
 
@@ -29,7 +29,7 @@
 	$data->settings->columns = $m['w2'];
 	$data->settings->diagonal = !empty($m['x']);
 	$data->settings->difficulty = $dificulties[$m['d'] ?? 'e'] ?? $dificulties['e'];
-	$data->settings->jigsaw = false;
+	$data->settings->jigsaw = FALSE;
 	$data->settings->killer = !empty($m['k']);
 	$data->settings->rows = $m['h2'];
 	$data->settings->symmetry = $m['s'] ?? 'r2';
@@ -47,5 +47,5 @@
 	else
 	{
 		$data->debug = $o;
-		echo json_encode($data, 128 * 3);
+		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
 	}
