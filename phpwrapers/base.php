@@ -2,14 +2,19 @@
 
 	ob_start();
 	define('DEBUG', !empty($_GET['debug']) || ($argv[1] ?? '') === '-v');
+	define('CLI', PHP_SAPI === 'cli');
+
 	$o = NULL;
 	$data = (object) [];
+	$data->id = NULL;
+	$data->name = NULL;
+	$data->seed = NULL;
 	$data->settings = (object) [];
 	$data->state = (object) [];
 
 	chdir(__DIR__ . '/..');
 
-	if(isset($_SERVER))
+	if(!CLI)
 	{
 		header('Content-Type: application/json');
 
@@ -22,14 +27,16 @@
 
 	register_shutdown_function(
 		static function () {
-			global $data, $argv, $o;
-			if($error = ob_end_clean()){
-				if(isset($_SERVER)) {
-					header('HTTP/1.1 500 ' . $error);
-					echo 'false';
+			global $data, $o;
+			if($error = trim(ob_get_clean())){
+				if(CLI)
+				{
+					fprintf(STDERR, "%s\n", $error);
 					return;
 				}
-				fprintf(STDERR, "%s\n", $error);
+
+				header('HTTP/1.1 500 ' . $error);
+				echo 'false';
 				return;
 			}
 
