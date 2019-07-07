@@ -8,7 +8,7 @@
 	[$name, $id] = explode(': ', $o[1], 2);
 	[$name, $config] = explode(': ', $o[0]);
 
-	if(1 || !preg_match('/^(?<w2>\d+)x(?<h2>\d+)$/', $config, $m))
+	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)$/', $config, $m))
 	{
 		die('Failed generations');
 	}
