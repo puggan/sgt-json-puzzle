@@ -16,7 +16,6 @@
 		'Max',
 	];
 
-
 	chdir(__DIR__ . '/..');
 	exec('bin/lightupsolver', $o);
 
@@ -24,11 +23,9 @@
 	[$name, $id] = explode(': ', $o[1], 2);
 	[$name, $config] = explode(': ', $o[0]);
 
-
 	if(!preg_match('/^(?<w2>\d+)x(?<h2>\d+)b(?<b>\d+)s(?<s>\d+)d(?<d>\d+)$/', $config, $m))
 	{
 		header('HTTP/1.1 500 Failed generations');
-		echo $config, PHP_EOL;
 		die('false');
 	}
 
@@ -37,17 +34,17 @@
 	$data->name = $name;
 	$data->settings = (object) [];
 	$data->settings->columns = $m['w2'];
-	$data->settings->difficulty = $dificulties[$m['d'] ?? -1] ?? null;
+	$data->settings->difficulty = $dificulties[$m['d'] ?? -1] ?? NULL;
 	$data->settings->rows = $m['h2'];
 	$data->settings->blackpc = $m['b'];
-	$data->settings->symm = $symm[$m['s']] ?? null;
+	$data->settings->symm = $symm[$m['s']] ?? NULL;
 	$data->seed = $config . '#' . $seed;
 	$data->state = (object) [];
 
 	$c = $data->settings->columns;
 	$data->state = array_fill(0, $data->settings->rows, array_fill(0, $c, 6));
 
-	if(preg_match_all('#(?<d>z*[a-z_])?(?<t>[0-4B])#', $id, $parts, PREG_SET_ORDER))
+	if(preg_match_all('#(?<d>z*[a-z])?(?<t>[0-4B])#', $id, $parts, PREG_SET_ORDER))
 	{
 		$pos = 0;
 		foreach($parts as $part)
@@ -75,7 +72,9 @@
 	if(empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
 	{
 		echo json_encode($data);
-	} else {
+	}
+	else
+	{
 		$data->specification = [
 			'No neighbors are lights',
 			'1 neighbor is a light',
@@ -83,9 +82,9 @@
 			'3 neighbors are lights',
 			'All neighbors are lights',
 			'Unknown number of neighbors are lights',
-			'Open space'
+			'Open space',
 		];
 		$data->debug = $o;
-		echo json_encode($data, 128*3);
+		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
 	}
 

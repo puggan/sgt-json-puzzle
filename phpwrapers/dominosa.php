@@ -17,9 +17,9 @@
 	[$name, $id] = explode(': ', $o[1], 2);
 	[$name, $config] = explode(': ', $o[0]);
 
-	if(!preg_match('/^(?<m>\d+)d(?<d>.)$/', $config, $m)) {
+	if(!preg_match('/^(?<m>\d+)d(?<d>.)$/', $config, $m))
+	{
 		header('HTTP/1.1 500 Failed generations');
-		echo $config, PHP_EOL;
 		die('false');
 	}
 
@@ -34,9 +34,9 @@
 	$data->settings->rows = $m['m'] + 1;
 	$data->state = [];
 
-	if(!preg_match_all('#\[\d+]|\d#', $id, $parts)) {
+	if(!preg_match_all('#\[\d+]|\d#', $id, $parts))
+	{
 		header('HTTP/1.1 500 Failed generations');
-		echo $config, PHP_EOL;
 		die('false');
 	}
 	$clues = array_map(
@@ -51,7 +51,9 @@
 	if(empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
 	{
 		echo json_encode($data);
-	} else {
+	}
+	else
+	{
 		$data->debug = $o;
-		echo json_encode($data, 128*3);
+		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
 	}

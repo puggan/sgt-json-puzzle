@@ -41,6 +41,6 @@
 	else
 	{
 		$data->debug = $o;
-		echo json_encode($data, 128 * 3);
+		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
 	}
 

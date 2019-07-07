@@ -29,7 +29,7 @@
 	$data->name = $name;
 	$data->settings = (object) [];
 	$data->settings->columns = $size;
-	$data->settings->difficulty = $dificulties[$m['d'] ?? -1] ?? null;
+	$data->settings->difficulty = $dificulties[$m['d'] ?? -1] ?? NULL;
 	$data->settings->rows = $size;
 	$data->settings->adjacent = !empty($m['a']);
 	$data->seed = $config . '#' . $seed;
@@ -54,5 +54,5 @@
 	else
 	{
 		$data->debug = $o;
-		echo json_encode($data, 128 * 3);
+		echo json_encode($data, JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
 	}
