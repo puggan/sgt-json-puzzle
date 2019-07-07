@@ -13,7 +13,7 @@
 	$data->seed = '';
 	$data->state = [];
 
-	if(0 && empty($_GET['debug']))
+	if(0 && empty($_GET['debug']) && ($argv[1] ?? '') !== '-v')
 	{
 		echo json_encode($data);
 	} else {
