@@ -56,16 +56,89 @@
 
 	/**
 	 * @param string[] $o
-	 * @param bool $nics
+	 * @param bool $ncsi
 	 */
 	function parse_ncis($o, $ncsi = false)
 	{
 		global $config, $data, $id, $o, $seed;
 		$s = ': ';
 		$data->name = strstr($o[0], $s, true);
-		$id = strstr($o[0], $s);
-		$seed = strstr($o[$ncsi ? 2 : 1], $s);
-		$config = strstr($o[$ncsi ? 1 : 2], $s);
+		$config = substr(strstr($o[0], $s), 2);
+		$id = substr(strstr($o[$ncsi ? 2 : 1], $s), 2);
+		$seed = substr(strstr($o[$ncsi ? 1 : 2], $s), 2);
 		$data->id = $config . ':' . $id;
 		$data->seed = $config . '¤' . $seed;
+	}
+
+	/**
+	 * @param int[][]|string[][] $grid
+	 * @param string $id
+	 * @param bool $za26: {25: y, 26: za} vs {25:y , 26: z, 27: za}
+	 * @param null|callable $n_callback
+	 * @param string $n_rule
+	 *
+	 * @return mixed
+	 */
+	function az_grid($grid, $id, $za26 = false, $n_callback = null, $n_rule = '\d')
+	{
+		if($za26)
+		{
+			if(!preg_match_all('/(?<d>z*[a-y_])?(?<n>' . $n_rule . '?)/', $id, $parts, PREG_SET_ORDER))
+			{
+				return $grid;
+			}
+		}
+		else if(!preg_match_all('/(?<d>z*[a-z_])?(?<n>' . $n_rule . ')/', $id, $parts, PREG_SET_ORDER))
+		{
+			return $grid;
+		}
+
+		$in_range_error = null;
+		$columns = count($grid[0]);
+		$pos = 0;
+		foreach($parts as $index => $part)
+		{
+			if($part[0] === '')
+			{
+				continue;
+			}
+			if($in_range_error) {
+				throw new RuntimeException($in_range_error);
+			}
+			if($part['d'] && $part['d'] !== '_')
+			{
+				$d = $part['d'];
+				while($d && $d[0] === 'z')
+				{
+					$pos += $za26 ? 25 : 26;
+					$d = substr($d, 1);
+				}
+				if($d)
+				{
+					$pos += ord($d[0]) - 96;
+				}
+			}
+			$col = $pos % $columns;
+			$row = ($pos - $col) / $columns;
+			if(!isset($grid[$row][$col]))
+			{
+				$in_range_error = "Missing cell: {$row}x{$col}";
+				continue;
+			}
+			if($n_callback)
+			{
+				$grid[$row][$col] = $n_callback($part['n']);
+			}
+			else
+			{
+				$grid[$row][$col] = +$part['n'];
+			}
+			$pos++;
+		}
+		return $grid;
+	}
+
+	function fill_2d($r, $c, $d)
+	{
+		return array_fill(0, $r, array_fill(0, $c, $d));
 	}
