@@ -16,9 +16,9 @@
 		die('Failed generations');
 	}
 
-	$data->settings->columns = $m['w2'];
+	$data->settings->columns = (int) $m['w2'];
 	$data->settings->difficulty = $dificulties[$m['d']] ?? NULL;
-	$data->settings->rows = $m['h2'];
+	$data->settings->rows = (int) $m['h2'];
 	$data->state = array_chunk(
 		array_map(
 			static function ($c) {
