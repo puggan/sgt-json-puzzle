@@ -16,7 +16,8 @@
 		die('Failed generations');
 	}
 
-	$clues = array_map('intval', explode(',', $id));
+	$cluesStrs = explode(',', $id);
+	$clues = array_map('intval', $cluesStrs);
 	$tree = static function () {
 		return 1;
 	};
@@ -26,4 +27,4 @@
 	$data->settings->rows = (int) $m['h2'];
 	$data->state->columns = array_slice($clues, 1, $m['w2']);
 	$data->state->rows = array_slice($clues, 1 + $m['w2']);
-	$data->state->grid = az_grid(fill_2d($m['h2'], $m['w2'], 0), $clues[0], true, $tree);
+	$data->state->grid = az_grid(fill_2d($m['h2'], $m['w2'], 0), $cluesStrs[0], true, $tree);
