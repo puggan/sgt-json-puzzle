@@ -7,7 +7,7 @@
 		't' => 'Tricky',
 	];
 
-	exec('bin/singlessolver', $o);
+	exec('bin/singlessolver 12dk', $o);
 
 	parse_ncis($o);
 
