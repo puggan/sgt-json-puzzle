@@ -45,5 +45,5 @@ API status:
  * twiddle: missing
  * undead: missing
  * unequal: ✓ API
- * unruly: old-API
+ * unruly: ✓ API
  * untangle: missing
