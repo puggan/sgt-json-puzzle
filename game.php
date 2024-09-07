@@ -12,7 +12,7 @@ try {
         }
 
         /** @var class-string<Game> $className */
-        $className = '\\Puggan\\SgtJsonPuzzle\\' . $gameName;
+        $className = '\\Puggan\\SgtJsonPuzzle\\' . strtr($gameName, ['.php' => '', 'src/' => '']);
         if (!class_exists($className)) {
             throw new \Exception('Unknown game: ' . $gameName);
         }
