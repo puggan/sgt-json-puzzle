@@ -11,7 +11,12 @@ abstract class Game
 
     /** @var list<string> $output */
     public array $output = [];
+
     abstract public function __construct(array $config);
+
+    /**
+     * @return array{id: string, name: string, seed: string, settings: array, state: array}
+     */
     abstract public function startState(): array;
 
     protected function runSolver(string $solverName): void
