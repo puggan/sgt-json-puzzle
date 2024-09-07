@@ -1,0 +1,20 @@
+{
+    "name": "puggan/sgt-json-puzzle",
+    "description": "API for start-states for the great SGT Puzzles",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Puggan\\SgtJsonPuzzle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Puggan Sundragon",
+            "email": "puggan@sundragon.se"
+        }
+    ],
+    "require": {
+        "php": ">=8.3"
+    }
+}
