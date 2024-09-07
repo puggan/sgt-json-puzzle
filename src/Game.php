@@ -20,9 +20,14 @@ abstract class Game
             throw new \Exception('Failed to run solver: ' . $solverName);
         }
 
+        $this->parseSolverOutput();
+    }
+
+    protected function parseSolverOutput(): void
+    {
         [$this->name, $this->configString] = explode(': ', $this->output[0], 2) + ['', ''];
-        [$row1name, $row1value] = explode(': ', $this->output[1], 2) + ['', ''];
-        [$row2name, $row2value] = explode(': ', $this->output[2], 2) + ['', ''];
+        [$row1name, $row1value] = explode(': ', $this->output[1] ?? '', 2) + ['', ''];
+        [$row2name, $row2value] = explode(': ', $this->output[2] ?? '', 2) + ['', ''];
         $this->seed = $row1name === 'Seed' ? $row1value : $row2value;
         $this->id = $row1name !== 'Seed' ? $row1value : $row2value;
     }
