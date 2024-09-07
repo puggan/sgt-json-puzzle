@@ -14,7 +14,7 @@ class GridParser
     {
     }
 
-    public function emptyGrid($value = 0)
+    public function emptyGrid($value = null)
     {
         return array_fill(0, $this->rows, array_fill(0, $this->columns, $value));
     }
@@ -54,7 +54,7 @@ class GridParser
             $col = $pos % $columns;
             $row = ($pos - $col) / $columns;
 
-            if (!isset($grid[$row][$col])) {
+            if (!array_key_exists($col, $grid[$row] ?? [])) {
                 $in_range_error = "Missing cell: {$row}x{$col}";
                 continue;
             }
